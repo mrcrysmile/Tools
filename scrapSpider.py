@@ -1,6 +1,7 @@
 # %%
 import scrapy
 from scrapy.http import Request
+import csv
 
 class FashionhmSpider(scrapy.Spider):
     name = 'fashionHM'
