@@ -94,7 +94,7 @@ def data2cdp(apiKey, encryptKey, path, func=pj.parseJson):
 if __name__ == "__main__":
     # pj.read_txt(r'C:\Users\Administrator\Desktop\popularity.log', pj.parse_num_data)
     # pj.read_txt(r'C:\Users\Administrator\Desktop\comment.log', pj.parse_comment)
-    data2cdp('1574bddb75c78a6fd2251d61e2993b5146201319', 'c8306ae139ac98f432932286151dc0ec55580eca', r'D:\wuziyang\wuziyang\货清清\货清清数据\data_split.txt', pj.parse_res_data)
+    data2cdp('472b07b9fcf2c2451e8781e944bf5f77cd8457c8', '934385f53d1bd0c1b8493e44d0dfd4c8e88a04bb', r'D:\wuziyang\wuziyang\货清清\货清清数据\testData.txt', pj.parse_res_data)
 
 # %%
 import requests
@@ -132,5 +132,50 @@ print('rec_list len: ' + str(len(b)))
 print('rec_list example: ' + str(b[0]))
 print('rec_id: ' + str(c))
 
+
+# %%
+import matplotlib.pyplot as plt
+import numpy as np
+plt.rcParams['font.sans-serif']=['SimHei']
+plt.figure(figsize=(24, 8))
+plt.xlabel('rating范围(1e-5)')
+plt.ylabel('rating数量占比(%)')
+values = [15999, 120335172, 139685423, 58133, 11580, 3556, 3415, 1206, 4250]
+values = [15623, 118882363, 139793853, 978010, 238079, 86760, 42663, 58166, 11026, 3452, 3137, 1223, 3175]
+values = [45.68,
+17.65,
+4.10,
+2.69,
+2.01,
+1.62,
+1.36,
+1.19,
+1.06,
+0.93,
+0.84,
+5.48,
+3.04,
+12.36
+]
+
+bins = [-1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 3]
+ranges = ["(-1, -0.05)", "(-0.05, 0)", "(0, 0.05)", "(0.05, 0.1)", 
+"(0.1, 0.15)", "(0.15, 0.2)", "(0.2，0.4)", "(0.4, 0.6)", "(0.6, 3)"]
+ranges = ["(-1, -0.05)", "(-0.05, 0)", "(0, 0.01)", "(0.01, 0.02)", "(0.02, 0.03)", 
+"(0.03, 0.04)", "(0.04, 0.05)", "(0.05, 0.1)", "(0.1, 0.15)",
+ "(0.15, 0.2)", "(0.2，0.4)", "(0.4, 0.6)", "(0.6, 3)"]
+ranges = ["小于0", "(0, 1)", "(1, 2)", "(2, 3)", 
+"(3, 4)", "(4, 5)", "(5, 6)", "(6, 7)",
+ "(7, 8)", "(8，9)", "(9, 10)", "(10, 20)", "(20, 30)", "大于30"]
+
+
+
+rects = plt.bar(ranges, values)
+for rect in rects:
+  height = rect.get_height()
+  plt.text(rect.get_x()+rect.get_width()/2.-0.2, 1.03*height, '%s' % height)
+
+# plt.savefig('C:\Users\Administrator\Desktop\hist.jpg')
+plt.show()
 
 # %%

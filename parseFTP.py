@@ -349,10 +349,11 @@ def get_user_op_log():
     unionIdSet = set()
     channelDict = dict()
     dataSet = set()
+    methodSet = set()
     earliest_time = time.strptime('2020-9-23 00:00:00','%Y-%m-%d %H:%M:%S')
     latest_time = time.strptime('1970-01-01 00:00:00','%Y-%m-%d %H:%M:%S')
 
-    with open(r'C:\Users\Administrator\Desktop\user_op_log.txt', 'r', encoding='utf-8') as f:
+    with open(r'C:\Users\Administrator\Desktop\new_user_op_log.txt', 'r', encoding='utf-8') as f:
         line = f.readline()
         line = f.readline()
         while line:
@@ -384,11 +385,13 @@ def get_user_op_log():
             # deviceId,
             # userName
             methodName = t[0]
-            ip = t[1]
-            unionId = t[2]
-            channel = t[3]
+            # ip = t[1]
+            # unionId = t[2]
+            # channel = t[3]
             crtTime = t[5]
-            dataId = t[7]
+            # dataId = t[7]
+
+            methodSet.add(methodName)
 
             # # methodName num
             # if methodName in methodDict:
@@ -407,12 +410,12 @@ def get_user_op_log():
             # else:
             #     channelDict.update({channel: 1})
 
-            # # 更新时间
-            # cur_time = time.strptime(crtTime.split('.')[0],'%Y-%m-%d %H:%M:%S')
-            # if cur_time > latest_time:
-            #     latest_time = cur_time
-            # elif cur_time < earliest_time:
-            #     earliest_time = cur_time
+            # 更新时间
+            cur_time = time.strptime(crtTime.split('.')[0],'%Y-%m-%d %H:%M:%S')
+            if cur_time > latest_time:
+                latest_time = cur_time
+            elif cur_time < earliest_time:
+                earliest_time = cur_time
 
             # if channel == 'app':
             #     app_res.append(t)
@@ -431,8 +434,8 @@ def get_user_op_log():
             #     search_good_res.append(t)
             # elif methodName == '货清清找人、店铺列表':
             #     search_shop_res.append(t)
-            if methodName == '浏览好货详情查询':
-                search_detail_res.append(t)
+            # if methodName == '浏览好货详情查询':
+            #     search_detail_res.append(t)
 
             # res.append(t)
             line = f.readline()
@@ -445,8 +448,8 @@ def get_user_op_log():
     # print("各操作类型数：" + str(methodDict))
     # print("各渠道操作数：" + str(channelDict))
     # print("总操作数：" + str(len(res)))
-    # print("最早操作时间：" + str(time.strptime(earliest_time,'%Y-%m-%d %H:%M:%S')))
-    # print("最晚操作时间：" + str(time.strptime(latest_time,'%Y-%m-%d %H:%M:%S')))
+    print("最早操作时间：" + str(time.strptime(earliest_time,'%Y-%m-%d %H:%M:%S')))
+    print("最晚操作时间：" + str(time.strptime(latest_time,'%Y-%m-%d %H:%M:%S')))
 
     # for d in app_res:
     #     methodName = d[0]
@@ -572,11 +575,13 @@ def get_user_op_log():
     # print('shop res len:' + str(len(search_shop_res)))
     # print('dict len:' + str(len(modelDataDict)))
     
-    with open(r'C:\Users\Administrator\Desktop\浏览好货详情.txt', 'w', encoding='utf-8') as f:
-        for v in search_detail_res:
-            f.write(';'.join(v))
-            f.write('\n')
-        f.close()
+    # with open(r'C:\Users\Administrator\Desktop\浏览好货详情.txt', 'w', encoding='utf-8') as f:
+    #     for v in search_detail_res:
+    #         f.write(';'.join(v))
+    #         f.write('\n')
+    #     f.close()
+
+    print(methodSet)
 
     return res
 
@@ -645,4 +650,63 @@ for row in s:
 print("各状态货品数：" + str(stat_dict))
 
 # print("去重productid后货品数：" + str(len(union_id_set)))
+# %%
+import numpy as np
+s = list()
+with open(r'C:\Users\Administrator\Desktop\address.txt', 'r', encoding='utf-8') as f:
+    line = f.readline()
+    while line:
+        t = line.replace(',', '').replace(' ', '').replace('\'', '').replace('{', '') \
+            .replace('}', '').replace('code', '').replace(':', '')
+        lst = t.split('title')
+        s.append(lst)
+        line = f.readline()
+    f.close()
+
+with open(r'C:\Users\Administrator\Desktop\address_new', 'w', encoding='utf-8') as f:
+    for q in s:
+        f.write(','.join(q))
+    f.close()
+
+
+# %%
+
+#
+def find_error_data():
+    # keys = set()
+    # with open(r'C:\Users\Administrator\Desktop\user-uinonid.log', 'r', encoding='utf-8') as f:
+    #     line = f.readline()
+    #     while line:
+    #         t = line.split(' ')[1]
+    #         keys.add(t)
+    #         line = f.readline()
+    #     f.close()
+
+    # error_data = []
+    # with open(r'C:\Users\Administrator\Desktop\Idata集群30.200_2020-10-23_13-20-30.log', 'r', encoding='utf-8') as f:
+    #     line = f.readline()
+    #     while line:
+    #         t = line.split('\t')
+    #         if t[1] not in keys:
+    #             q = ','.join([t[1], t[3], t[5]])
+    #             error_data.append(q)
+    #         line = f.readline()
+    #     f.close()
+    
+    res = []
+    with open(r'C:\Users\Administrator\Desktop\Idata集群30.202_2020-10-28_09-15-28.log', 'r', encoding='utf-8') as f:
+        line = f.readline()
+        while line:
+            t = line.split('\t')
+            if t[-2] == '':
+                print("error data: %s" % line)
+            line = f.readline()
+        f.close()
+    # with open(r'C:\Users\Administrator\Desktop\time_data', 'w', encoding='utf-8') as f:
+    #     for q in res:
+    #         f.write(q)
+    #     f.close()
+
+find_error_data()
+
 # %%
