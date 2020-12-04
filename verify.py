@@ -219,6 +219,7 @@ f = np.array([403., 122., 105.,  44.,  21.,  12.,  17.,  18.])
 plt.bar(z, f)
 plt.show()
 # %%
+import matplotlib.pyplot as plt
 basep = r'E:\货清清data\als'
 q = np.array([])
 for i in range(1, 11):
@@ -229,5 +230,20 @@ for i in range(1, 11):
             u = l.split(',')
             q.append(u)
 
+w = np.sort(q)
+c = len(w)
+p = int(c / 100)
+x = []
+for i in range(100):
+    pc = p * i
+    x.append(w[pc])
+y = range(100)
+plt.scatter
+plt.tick_params(axis='both',labelsize=14)
 
-
+# %%
+import numpy as np
+w = np.array([12,523,4,23])
+q = np.arange(10)
+q
+# %%
