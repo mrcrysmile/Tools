@@ -220,30 +220,40 @@ plt.bar(z, f)
 plt.show()
 # %%
 import matplotlib.pyplot as plt
-basep = r'E:\货清清data\als'
-q = np.array([])
+import numpy as np
+basep = r'E:\货清清data\alst'
+q = []
 for i in range(1, 11):
-    p = basep + i + '.log'
+    p = basep + str(i) + '.log'
     with open(p, 'r', encoding='utf-8') as f:
         lines = f.readlines()
         for l in lines:
             u = l.split(',')
-            q.append(u)
-
-w = np.sort(q)
+            q += u
+w = np.sort(np.array([float(i) for i in q]))
 c = len(w)
-p = int(c / 100)
-x = []
-for i in range(100):
-    pc = p * i
-    x.append(w[pc])
-y = range(100)
-plt.scatter
-plt.tick_params(axis='both',labelsize=14)
+print(c)
+# p = int(c / 100)
+# x = []
+# y = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,91,92,93,94,95,96,97,98,99]
+# print(w[0])
+# print(w[-1])
+# for i in y:
+#     pc = p * i
+#     x.append('%.2g' % float(w[pc]))
+# print(x[0])
+# print(x[-1])
+# print(x)
+# plt.figure(figsize=(40, 12))
+# plt.xlim(-0.0038, 0.027)
+# plt.ylim(0, 100)
+# plt.plot(x, y)
+# plt.tick_params(axis='both',labelsize=14)
+# plt.show()
 
 # %%
-import numpy as np
-w = np.array([12,523,4,23])
-q = np.arange(10)
-q
-# %%
+import matplotlib.pyplot as plt
+# len:31728664
+y = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,91,92,93,94,95,96,97,98,99]
+x = [-0.0038, -0.002, -0.0012, -0.00076, -0.00048, -0.00029, -0.00016, -7e-05, -2e-05, -1.6e-33, 1.7e-05, 6.8e-05, 0.00017, 0.00035, 0.00073, 0.0014, 0.0025, 0.0041, 0.0045, 0.0051, 0.0058, 0.0067, 0.0078, 0.0094, 0.012, 0.016, 0.027]
+plt.plot(x,y)
