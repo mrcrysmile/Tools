@@ -18,6 +18,16 @@ print("data rows:")
 print(len(user_id))
 print("user ids:")
 print(len(set(user_id)))
+
+# 读取未知编码
+def read():
+    dect = chardet.UniversalDetector()
+    class_set = set()
+    with open(r'C:\Users\Administrator\Desktop\1632.log', 'r', encoding='UTF-16') as f:
+        line = f.readline()
+        # dect.feed(line)
+        # print(dect.result)
+
 # %%
 # verify item_id_sn
 import numpy as np
@@ -257,3 +267,24 @@ import matplotlib.pyplot as plt
 y = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,91,92,93,94,95,96,97,98,99]
 x = [-0.0038, -0.002, -0.0012, -0.00076, -0.00048, -0.00029, -0.00016, -7e-05, -2e-05, -1.6e-33, 1.7e-05, 6.8e-05, 0.00017, 0.00035, 0.00073, 0.0014, 0.0025, 0.0041, 0.0045, 0.0051, 0.0058, 0.0067, 0.0078, 0.0094, 0.012, 0.016, 0.027]
 plt.plot(x,y)
+
+# %%
+import numpy as np
+import chardet
+
+def read():
+    dect = chardet.UniversalDetector()
+    class_set = set()
+    with open(r'C:\Users\Administrator\Desktop\1632.log', 'r', encoding='UTF-16') as f:
+        line = f.readline()
+        # dect.feed(line)
+        # print(dect.result)
+        while line:
+            for c in line.split("\",\"")[5].split(","):
+                class_set.add(c)
+            line = f.readline()
+    return class_set
+
+q = list(read())
+print(q)
+# %%
