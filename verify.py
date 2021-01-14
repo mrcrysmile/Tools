@@ -274,17 +274,38 @@ import chardet
 
 def read():
     dect = chardet.UniversalDetector()
-    class_set = set()
-    with open(r'C:\Users\Administrator\Desktop\1632.log', 'r', encoding='UTF-16') as f:
+    dataset = set()
+    with open(r'C:\Users\Administrator\Desktop\1695.log', 'r', encoding='UTF-16') as f:
         line = f.readline()
-        # dect.feed(line)
-        # print(dect.result)
         while line:
-            for c in line.split("\",\"")[5].split(","):
-                class_set.add(c)
+            dataset.add(line)
             line = f.readline()
-    return class_set
 
-q = list(read())
-print(q)
+    with open(r'C:\Users\Administrator\Desktop\1895.log', 'r', encoding='UTF-16') as f:
+        line = f.readline()
+        while line:
+            if line not in dataset:
+                print(line)
+            line = f.readline()
+    
 # %%
+import numpy as np
+import chardet
+
+dataset = set()
+with open(r'C:\Users\Administrator\Desktop\1.log', 'r', encoding='UTF-8') as f:
+    line = f.readline()
+    while line:
+        ls = line.split('[')[1].split(']')[0].replace('"', '').split(',')
+        for l in ls:
+            dataset.add(l)
+        line = f.readline()
+
+print(len(dataset))
+
+output = open(r'C:\Users\Administrator\Desktop\id.txt', 'w', encoding='utf-8')
+for v in dataset:
+    output.writelines(v)
+    output.writelines('\n')
+
+
