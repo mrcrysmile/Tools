@@ -1,4 +1,5 @@
 # %%
+# -*- coding:utf-8 -*-
 import numpy as np
 import pandas as pd
 import os
@@ -6,15 +7,23 @@ import urllib.request as request
 import socket
 import re
 import json
+from chardet import detect
 
 
 # read data from txt and parse row data
 def read_txt(path, parse_func):
     all_word = []
-    with open(path, 'r', encoding='utf-8') as f:
+    encode = ''
+    # with open(path, 'rb') as f:
+    #     line = f.read()
+    #     print("get encode...")
+    #     encode = detect(line)['encoding']
+    # print('got encode.')
+    with open(path, 'r', encoding='utf-8') as f: #'GB18030'
         line = f.readline()
         while line:
-            all_word.append(parse_func(line))
+            all_word.append(parse_func(line, f))
+            # print(line)
             line = f.readline()
 
     f.close()
@@ -22,7 +31,7 @@ def read_txt(path, parse_func):
 
 
 # parse huoqingqing data str
-def parse(in_str):
+def parse(in_str, f):
     res = []
     t1 = in_str.split(' INFO ')
     res.append(t1[0])
@@ -48,7 +57,7 @@ def parse(in_str):
                 res.append(i.split(":")[1])
 
     t5 = t4[1].split(',"origin')
-    res.append(t5[0].replace('\\', ''))
+    res.append(t5[0])
     for i in t5[1].replace('"', '').split('}')[0].split(","):
         if ":" in i:
             splt_i = i.split(":")
@@ -61,13 +70,39 @@ def parse(in_str):
 
 
 #
-def parseJson(data):
+def parseJson(data, f):
     return list(json.loads(data).values())
 
 
 #
-def parse_res_data(data):
+def parse_res_data(data, f):
     return data.split('\t')
+
+
+# 解析评论数据
+def parse_comment(data, f):
+    ret = []
+    ds = data.split(' INFO ')
+    ret.append(ds[0].replace(',', '.'))
+    ret.append(ds[1].replace('\n', ''))
+    l = f.readline()
+    if l:
+        ret.append(l.replace('\n', ''))
+    return ret
+
+
+# 解析数字数据文本
+def parse_num_data(data, f):
+    ret = []
+    ds = data.split(' INFO ')
+    ret.append(ds[0].replace(',', '.'))
+    partt = re.compile('[\d.]*')
+    ss = partt.findall(ds[1])
+    ss = list(filter(None, ss))
+    ret.append(ss[0])
+    ret.append(str(int(float(ss[1]) * 10000)))
+    ret.append(str(int(float(ss[2]) * 10000)))
+    return ret
 
 
 # write data
@@ -187,18 +222,8 @@ if __name__ == "__main__":
     process_ori_data()
     # statData()
 
+
 # %%
-import json
-read_tar = False
-with open(r'C:\Users\Administrator\Desktop\用戶信息.txt', 'r', encoding='utf-8') as f:
-    line = f.readline()
-    while line and not read_tar:
-        k = list(json.loads(line).values())
-        # if '.MOV' in line:
-        #     print(line)
-        #     read_tar = True
-        line = f.readline()
-f.close()
-
-
+# read_txt(r'C:\Users\Administrator\Desktop\comment(1).log', parse_comment)
+# read_txt(r'C:\Users\Administrator\Desktop\popularity.log', parse_num_data)
 # %%
